@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ERP_ENV=/etc/erp_sync.env
+
+*/5 * * * * ubuntu /usr/local/bin/erp_env_wrapper /opt/erp/sync_erp.sh >> /var/log/erp_sync.log 2>&1
+*/2 * * * * ubuntu /usr/local/bin/erp_env_wrapper /opt/erp/health_check.sh >> /var/log/erp_sync.log 2>&1
+0 2 * * * ubuntu /usr/local/bin/erp_env_wrapper /opt/erp/backup_to_s3.sh >> /var/log/erp_backup.log 2>&1
+0 0 * * 0 ubuntu find /var/backups/erp -type f -mtime +14 -delete

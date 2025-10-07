@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+set -a
+[ -f /etc/erp_sync.env ] && source /etc/erp_sync.env
+if [ -z "${ERP_ENCRYPT_PASSPHRASE:-}" ]; then
+  ERP_ENCRYPT_PASSPHRASE="$(aws ssm get-parameter --name /erp/ENCRYPT_PASSPHRASE --with-decryption --query Parameter.Value --output text || true)"
+fi
+set +a
+exec "$@"

@@ -1,0 +1,15 @@
+/var/log/erp_sync.log /var/log/erp_backup.log {
+  weekly
+  rotate 8
+  size 5M
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 0640 ubuntu ubuntu
+  su ubuntu ubuntu
+  sharedscripts
+  postrotate
+    systemctl reload nginx >/dev/null 2>&1 || true
+  endscript
+}
